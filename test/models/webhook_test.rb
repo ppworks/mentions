@@ -23,11 +23,9 @@ class WebhookTest < ActiveSupport::TestCase
   end
 
   def test_run
-    slack = mock('Webhooks::To::Slack')
-    Webhooks::To::Slack.expects(:new).returns(slack)
-    slack.expects(:run)
+    Webhooks::To::Slack.any_instance.stubs(:post)
 
     webhook = webhooks(:github_to_slack)
-    webhook.run(payload: {comment: {body: '@ppworks 見てくだい'}}.to_json)
+    webhook.run(payload: {comment: {html_url: 'http://example.com/issue/1#issuecomment-1', body: '@ppworks 見てくだい'}}.to_json)
   end
 end
