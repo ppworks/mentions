@@ -6,6 +6,8 @@ class Webhook < ApplicationRecord
   validates :to, inclusion: { in: TO }
   validates :token, uniqueness: true
 
+  before_validation :set_token, on: :create, unless: -> { token }
+
   def from_class
     Webhooks::From.const_get(from.classify)
   end
@@ -21,5 +23,11 @@ class Webhook < ApplicationRecord
       id_mapping.find(user_name: m, from: from, to: to)
     }.compact
     to_class.new(mentions: mentions, url: from_instance.url).run
+  end
+
+  private
+
+  def set_token
+    self.token = SecureRandom.uuid.gsub(/-/,'')
   end
 end
