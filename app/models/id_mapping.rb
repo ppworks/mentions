@@ -13,7 +13,7 @@ class IdMapping
 
   def find(user_name:, from:, to:)
     user = @mappings.detect { |u| u[from.to_s] == user_name.to_s }
-    user[to].to_s
+    user[to]
   rescue
     nil
   end
