@@ -16,7 +16,10 @@ class Webhook < ApplicationRecord
 
   def run(payload:)
     from_instance = from_class.new(payload: payload)
-    mentions = from_instance.mentions.map { |m| IdMapping.new(ENV['MENTIONS_MAPPING_FILE_PATH']).find(user_name: m, from: from, to: to) }
+    mentions = from_instance.mentions.map do |m|
+      id_mapping ||= IdMapping.new(ENV['MENTIONS_MAPPING_FILE_PATH'])
+      id_mapping.find(user_name: m, from: from, to: to)
+    end
     to_class.new(mentions: mentions, url: from_instance.url).run
   end
 end
