@@ -4,21 +4,19 @@ class Webhooks::From::Github
   def initialize(payload:)
     @payload = payload
   rescue
-    @payload = nil
+    @payload = {}
   end
 
   def comment
     # 雑に探す
-    @payload['pull_request']['body']
-  rescue
-    @payload['comment']['body']
+    @payload.dig('comment', 'body') \
+    || @payload.dig('pull_request', 'body')
   end
 
   def url
     # 雑に探す
-    @payload['pull_request']['html_url']
-  rescue
-    @payload['comment']['html_url']
+    @payload.dig('comment', 'html_url') \
+    || @payload.dig('pull_request', 'html_url')
   end
 
   def mentions

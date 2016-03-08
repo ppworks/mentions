@@ -3,7 +3,7 @@ class WebhooksController < ApplicationController
 
   def create
     @webhook = Webhook.find_by!(token: params[:token])
-    @webhook.run(payload: params)
+    @webhook.run(payload: params.to_unsafe_h)
     head :no_content
   end
 end
