@@ -13,6 +13,10 @@ class Webhooks::From::Base
     ''
   end
 
+  def title
+    ''
+  end
+
   def url
     ''
   end

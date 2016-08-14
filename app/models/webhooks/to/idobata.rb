@@ -1,5 +1,5 @@
 class Webhooks::To::Idobata
-  def initialize(mention:, url:, additional_message:)
+  def initialize(mention:, title:, url:, additional_message:)
     @mention = "@#{mention}"
     @text = "#{@mention} #{url} #{additional_message}"
     # TODO: support multiple hook

@@ -6,6 +6,26 @@ class Webhooks::From::Github < Webhooks::From::Base
     assigned? ? 'assigned' : search_content('body')
   end
 
+  def from
+    "#{sender}@github"
+  end
+
+  def icon_url
+    [@payload.dig('sender', 'avatar_url')].compact.first
+  end
+
+  def sender
+    [@payload.dig('sender', 'login')].compact.first
+  end
+
+  def summary
+    assigned? ? "you've been assigned by #{sender}" : "you've been mentioned from #{sender}"
+  end
+
+  def title
+    search_content('title')
+  end
+
   def url
     search_content('html_url')
   end
@@ -18,12 +38,12 @@ class Webhooks::From::Github < Webhooks::From::Base
     end
   end
 
-  def assigned?
-    @payload.dig('action') == 'assigned'
+  def body
+    assigned? ? nil : search_content('body')
   end
 
-  def additional_message
-    assigned? ? "you've been assigned" : super
+  def assigned?
+    @payload.dig('action') == 'assigned'
   end
 
   def accept?
