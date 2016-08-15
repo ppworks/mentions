@@ -30,16 +30,16 @@ class Webhooks::From::Github < Webhooks::From::Base
     search_content('html_url')
   end
 
+  def body
+    assigned? ? nil : search_content('body')
+  end
+
   def mentions
     if assigned?
       [@payload.dig('assignee', 'login')].compact
     else
       super
     end
-  end
-
-  def body
-    assigned? ? nil : search_content('body')
   end
 
   def assigned?
