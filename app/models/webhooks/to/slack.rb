@@ -28,7 +28,7 @@ class Webhooks::To::Slack
         link_names: 1,
         channel: @channel
     }
-    puts payload
+    puts payload.to_json
     HttpPostJob.perform_later(@webhook_uri, { payload: payload.to_json })
   end
 end
