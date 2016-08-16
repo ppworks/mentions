@@ -1,9 +1,9 @@
 class Webhooks::To::Slack
-  def initialize(mention:, from:, icon_url:, summary:, title:, url:, body:)
+  def initialize(mention:, from:, id:, icon_url:, summary:, title:, url:, body:)
     @mention = "@#{mention}"
     @channel = @mention == '@everyone' ? '#general' : @mention
     @from = from
-    @summary = summary
+    @summary = "<#{url}|#{id}>: #{summary}"
     @title = title
     @url = url
     @icon_url = icon_url

@@ -17,6 +17,10 @@ class Webhooks::From::Base
     ''
   end
 
+  def id
+    ''
+  end
+
   def icon_url
     ''
   end

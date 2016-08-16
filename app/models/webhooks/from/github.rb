@@ -10,6 +10,10 @@ class Webhooks::From::Github < Webhooks::From::Base
     "#{sender}@github"
   end
 
+  def id
+    assigned? ? [@payload.dig('pull_request', 'number')].compact.first : [@payload.dig('issue', 'number')].compact.first
+  end
+
   def icon_url
     [@payload.dig('sender', 'avatar_url')].compact.first
   end
