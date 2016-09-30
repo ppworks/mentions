@@ -36,20 +36,14 @@ class Webhook < ApplicationRecord
 
   def run(payload:)
     from_instance = from_class.new(payload: payload)
-    puts "run1"
     return unless from_instance.accept?
 
-    puts "run2 #{from_instance}"
     mentions = from_instance.mentions.map { |m|
       id_mapping ||= IdMapping.new(ENV.fetch('MENTIONS_MAPPING_FILE_PATH'))
-      puts "run2.5 #{m}"
       id_mapping.find(user_name: m, from: from, to: to)
     }.compact
 
-
-    puts "run3 #{mentions}"
-
-    mentions.each do |mention|
+    mentions.uniq.each do |mention|
       to_class.new(mention: mention, from: from_instance.from, id: from_instance.id, icon_url: from_instance.icon_url, summary: from_instance.summary, title: from_instance.title, url: from_instance.url, body: from_instance.body).post
     end
   end
