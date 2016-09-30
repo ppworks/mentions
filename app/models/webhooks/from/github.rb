@@ -27,7 +27,8 @@ class Webhooks::From::Github < Webhooks::From::Base
   end
 
   def summary
-    "you've been mention by #{action} from #{sender}"
+    msg_action = assigned? ? 'assigned' : "mention"
+    "you've been #{msg_action} from #{sender}"
   end
 
   def title
