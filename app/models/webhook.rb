@@ -43,8 +43,8 @@ class Webhook < ApplicationRecord
       id_mapping.find(user_name: m, from: from, to: to)
     }.compact
 
-    mentions.each do |mention|
-      to_class.new(mention: mention, url: from_instance.url, additional_message: from_instance.additional_message).post
+    mentions.uniq.each do |mention|
+      to_class.new(mention: mention, from: from_instance.from, id: from_instance.id, icon_url: from_instance.icon_url, summary: from_instance.summary, title: from_instance.title, url: from_instance.url, body: from_instance.body).post
     end
   end
 

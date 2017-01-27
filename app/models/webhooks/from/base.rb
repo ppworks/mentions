@@ -13,7 +13,31 @@ class Webhooks::From::Base
     ''
   end
 
+  def from
+    ''
+  end
+
+  def id
+    ''
+  end
+
+  def icon_url
+    ''
+  end
+
+  def sender
+    ''
+  end
+
+  def title
+    ''
+  end
+
   def url
+    ''
+  end
+
+  def body
     ''
   end
 
@@ -22,7 +46,7 @@ class Webhooks::From::Base
     comment.scan(/@([\S]+)/).flatten.uniq || []
   end
 
-  def additional_message
+  def summary
     "you've been mentioned"
   end
 

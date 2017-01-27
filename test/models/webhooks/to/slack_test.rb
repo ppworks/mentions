@@ -5,10 +5,16 @@ class Webhooks::To::SlackTest < ActiveSupport::TestCase
 
   def test_run
     mention = 'ppworks'
+    from = 'johndoe'
+    id = '1'
+    icon_url = 'http://icon.example.com'
     url = 'http://example.com'
-    additional_message = 'message'
+    summary = 'summary'
+    title = 'title'
+    body = 'message'
 
-    slack = Webhooks::To::Slack.new(mention: mention, url: url, additional_message: additional_message)
+    slack = Webhooks::To::Slack.new(mention: mention, from: from, id:id, icon_url:icon_url, summary:summary, title:title, url: url, body: body)
+
     assert_enqueued_with(job: HttpPostJob) do
       slack.post
     end
@@ -19,10 +25,15 @@ class Webhooks::To::SlackTest < ActiveSupport::TestCase
 
   def test_run_everyone
     mention = 'everyone'
+    from = 'johndoe'
+    id = '1'
+    icon_url = 'http://icon.example.com'
     url = 'http://example.com'
-    additional_message = 'message'
+    summary = 'summary'
+    title = 'title'
+    body = 'message'
 
-    slack = Webhooks::To::Slack.new(mention: mention, url: url, additional_message: additional_message)
+    slack = Webhooks::To::Slack.new(mention: mention, from: from, id:id, icon_url:icon_url, summary:summary, title:title, url: url, body: body)
     assert_enqueued_with(job: HttpPostJob) do
       slack.post
     end

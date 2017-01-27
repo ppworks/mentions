@@ -14,7 +14,7 @@ class Webhooks::From::Esa < Webhooks::From::Base
     [@payload.dig('mentioned_user', 'screen_name')].compact.uniq
   end
 
-  def additional_message
+  def summary
     "you've been mentioned(\\( ⁰⊖⁰)/)"
   end
 end

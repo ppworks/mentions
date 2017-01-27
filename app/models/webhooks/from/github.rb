@@ -1,13 +1,46 @@
 class Webhooks::From::Github < Webhooks::From::Base
   PATTERNS = %w(comment pull_request issue)
-  ACCEPT_ACTIONS = %w(created opened assigned)
+  ACCEPT_ACTIONS = %w(created opened assigned edited)
 
   def comment
     assigned? ? 'assigned' : search_content('body')
   end
 
+  def from
+    "#{sender}@github"
+  end
+
+  def id
+    opened? ? [@payload.dig('pull_request', 'number')].compact.first : [@payload.dig('issue', 'number')].compact.first
+  end
+
+  def icon_url
+    [@payload.dig('sender', 'avatar_url')].compact.first
+  end
+
+  def sender
+    [@payload.dig('sender', 'login')].compact.first
+  end
+
+  def action
+    @payload['action']
+  end
+
+  def summary
+    msg_action = assigned? ? 'assigned' : "mention"
+    "you've been #{msg_action} from #{sender}"
+  end
+
+  def title
+    search_content('title')
+  end
+
   def url
     search_content('html_url')
+  end
+
+  def body
+    assigned? ? nil : search_content('body')
   end
 
   def mentions
@@ -22,11 +55,11 @@ class Webhooks::From::Github < Webhooks::From::Base
     @payload.dig('action') == 'assigned'
   end
 
-  def additional_message
-    assigned? ? "you've been assigned" : super
+  def opened?
+    @payload.dig('action') == 'opened'
   end
 
   def accept?
-    ACCEPT_ACTIONS.include?(@payload['action'])
+    ACCEPT_ACTIONS.include?(action)
   end
 end
