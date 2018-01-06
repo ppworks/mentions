@@ -5,8 +5,6 @@ class Webhooks::From::Base
 
   def initialize(payload:)
     @payload = JSON.parse(payload)
-  rescue
-    @payload = {}
   end
 
   def comment
