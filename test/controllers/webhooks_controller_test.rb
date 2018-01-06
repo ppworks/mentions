@@ -9,7 +9,9 @@ class WebhooksControllerTest < ActionController::TestCase
 
   def test_hook_from_github_and_new_by_env
     ENV['GITHUB_TO_SLACK_TOKEN'] = 'env_token'
-    post :create, params: { token: 'env_token' }
+    event = "commit_comment"
+    payload = YAML.load_file("#{Rails.root}/test/payloads/github_payloads.yml")[event]['body']
+    post :create, params: { token: 'env_token' }, body: payload
     assert_response :success
     ENV.delete('GITHUB_TO_SLACK_TOKEN')
   end
